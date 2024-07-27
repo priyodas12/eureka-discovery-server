@@ -1,45 +1,22 @@
-#Springboot profiles & devtools related property configuration
-spring:
-  application:
-    name: eureka-discovery-server
-  profiles:
-    active: dev
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
-
 server:
-  port: 8761
+  port: 8761  # The port on which the Eureka server will run
 
-#Springboot actuator related property configuration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-#Eureka server related property configuration
 eureka:
   instance:
-    hostname: localhost
+    hostname: localhost  # The hostname of the Eureka server instance
+
   client:
-    prefer-ip-address: true
-    register-with-eureka: false
-    fetch-registry: false
-    service-url:
-      defaultZone: http://discovery:8761/eureka
-  server:
-    enable-self-preservation: false
-    eviction-interval-timer-in-ms: 60000
-    renewal-percent-threshold: 0.85
-    response-cache-update-interval-ms: 30000
-    maximum-time-to-wait-for-ack-ms: 5000
-    enable-http2: true
+    registerWithEureka: false  # Don't register the server with itself
+    fetchRegistry: false  # Don't fetch the registry from itself
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # URL for clients to register with Eureka
 
+spring:
+  application:
+    name: eureka-server  # Name of the application
 
-
+logging:
+  level:
+    com.netflix.eureka: INFO  # Logging level for Eureka
+    org.springframework.cloud.netflix.eureka: INFO  # Logging level for Spring Cloud Netflix Eureka
+    root: INFO  # Default logging level
